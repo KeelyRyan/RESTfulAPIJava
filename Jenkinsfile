@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/KeelyRyan/RESTfulAPIJava/tree/main/orders'
+                git 'https://github.com/KeelyRyan/RESTfulAPIJava.git'
             }
         }
         stage('Build') {
@@ -18,6 +18,13 @@ pipeline {
             steps {
                 withSonarQubeEnv('SonarQube') {
                     sh 'mvn clean verify sonar:sonar'
+                }
+            }
+        }
+        stage('Docker Build') {
+            steps {
+                script {
+                    docker.build('restfulapijava:latest')
                 }
             }
         }
