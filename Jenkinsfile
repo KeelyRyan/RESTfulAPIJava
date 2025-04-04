@@ -1,5 +1,9 @@
 pipeline {
     agent any
+    environment {
+        JAVA_HOME = '/Library/Java/JavaVirtualMachines/jdk-11.0.2.jdk/Contents/Home'
+        PATH = "${JAVA_HOME}/bin:${PATH}"
+    }
     tools {
         maven 'Default Maven'
     }
@@ -11,20 +15,26 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'mvn clean package'
+                dir('orders') {  
+                    sh 'mvn clean package'
+                }
             }
         }
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('SonarQube') {
-                    sh 'mvn clean verify sonar:sonar'
+                dir('orders') {
+                    withSonarQubeEnv('SonarQube') {
+                        sh 'mvn clean verify sonar:sonar'
+                    }
                 }
             }
         }
         stage('Docker Build') {
             steps {
-                script {
-                    docker.build('restfulapijava:latest')
+                dir('orders') {  
+                    script {
+                        docker.build('restfulapijava:latest')
+                    }
                 }
             }
         }
