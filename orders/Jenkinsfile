@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/KeelyRyan/RESTfulAPIJava/edit/main/orders/'
+                git 'https://github.com/KeelyRyan/RESTfulAPIJava/tree/main/orders'
             }
         }
         stage('Build') {
