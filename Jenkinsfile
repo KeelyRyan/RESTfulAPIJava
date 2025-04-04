@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        JAVA_HOME = '/Library/Java/JavaVirtualMachines/jdk-11.0.2.jdk/Contents/Home'
+        JAVA_HOME = "/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home"
         PATH = "${JAVA_HOME}/bin:${PATH}"
     }
     tools {
