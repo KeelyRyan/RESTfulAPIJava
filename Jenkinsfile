@@ -4,7 +4,7 @@ pipeline {
         JAVA_HOME = "/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home"
         PATH = "${JAVA_HOME}/bin:${PATH}"
     }
-      tools {
+   tools {
         maven 'Default Maven'
     }
     stages {
@@ -22,14 +22,16 @@ pipeline {
         }
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('SonarQube') {
-                    withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
-                        sh '''
-                            mvn clean verify sonar:sonar \
-                            -Dsonar.projectKey=orders \
-                            -Dsonar.host.url=http://localhost:9000 \
-                            -Dsonar.login=$SONAR_TOKEN
-                        '''
+                dir('orders') {  // Specify the correct directory
+                    withSonarQubeEnv('SonarQube') {
+                        withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
+                            sh '''
+                                mvn clean verify sonar:sonar \
+                                -Dsonar.projectKey=orders \
+                                -Dsonar.host.url=http://localhost:9000 \
+                                -Dsonar.login=$SONAR_TOKEN
+                            '''
+                        }
                     }
                 }
             }
