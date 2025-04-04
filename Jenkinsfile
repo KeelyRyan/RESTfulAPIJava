@@ -4,7 +4,7 @@ pipeline {
         JAVA_HOME = "/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home"
         PATH = "${JAVA_HOME}/bin:${PATH}"
     }
-    tools {
+      tools {
         maven 'Default Maven'
     }
     stages {
@@ -15,23 +15,28 @@ pipeline {
         }
         stage('Build') {
             steps {
-                dir('orders') {  
+                dir('orders') {
                     sh 'mvn clean package'
                 }
             }
         }
         stage('SonarQube Analysis') {
             steps {
-                dir('orders') {
-                    withSonarQubeEnv('SonarQube') {
-                        sh 'mvn clean verify sonar:sonar'
+                withSonarQubeEnv('SonarQube') {
+                    withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
+                        sh '''
+                            mvn clean verify sonar:sonar \
+                            -Dsonar.projectKey=orders \
+                            -Dsonar.host.url=http://localhost:9000 \
+                            -Dsonar.login=$SONAR_TOKEN
+                        '''
                     }
                 }
             }
         }
         stage('Docker Build') {
             steps {
-                dir('orders') {  
+                dir('orders') {
                     script {
                         docker.build('restfulapijava:latest')
                     }
