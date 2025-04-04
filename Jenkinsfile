@@ -1,7 +1,7 @@
 pipeline {
     agent any
     tools {
-        maven 'Default Macven'
+        maven 'Default Maven'
     }
     stages {
         stage('Checkout') {
