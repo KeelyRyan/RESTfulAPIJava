@@ -24,7 +24,7 @@ pipeline {
             steps {
                 dir('orders') {  // Specify the correct directory
                     withSonarQubeEnv('SonarQube') {
-                        withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
+                        withCredentials([string(credentialsId: 'sonar-token2', variable: 'SONAR_TOKEN')]) {
                             sh '''
                                 mvn clean verify sonar:sonar \
                                 -Dsonar.projectKey=orders \
