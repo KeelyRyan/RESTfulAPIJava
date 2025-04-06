@@ -16,30 +16,39 @@ public class OrderMapper {
         dto.setAmount(order.getAmount());
         dto.setProduct(order.getProduct());
         dto.setPrice(order.getPrice());
-        dto.setUpdatedAt(dto.getUpdatedAt());
-        dto.setCustomer(new CustomerDto(order.getCustomer().getName(), order.getCustomer().getEmail(), order.getCustomer().getMobileNumber()));
+        dto.setUpdatedAt(order.getUpdatedAt());
 
-        Link selfLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(OrderController.class)
-                .getOrder(order.getOrderId()))
-                .withSelfRel();
+        // Adding null check for order and customer
+        if (order != null && order.getCustomer() != null) {
+            dto.setCustomer(new CustomerDto(
+                    order.getCustomer().getName(), 
+                    order.getCustomer().getEmail(), 
+                    order.getCustomer().getMobileNumber()));
 
-        Link allOrdersLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(OrderController.class)
-                .getAllOrders(null))
-                .withRel("all-orders");
-        
-        Link updateLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(OrderController.class)
-                .updateOrder(order.getOrderId(), null))
-                .withRel("update");
+            Link selfLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(OrderController.class)
+                    .getOrder(order.getOrderId()))
+                    .withSelfRel();
 
-        Link deleteLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(OrderController.class)
-                .deleteOrder(order.getOrderId()))
-                .withRel("delete");
-       
-        
-        dto.add(selfLink);
-        dto.add(allOrdersLink);
-        dto.add(updateLink);
-        dto.add(deleteLink);
+            Link allOrdersLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(OrderController.class)
+                    .getAllOrders(null))
+                    .withRel("all-orders");
+            
+            Link updateLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(OrderController.class)
+                    .updateOrder(order.getOrderId(), null))
+                    .withRel("update");
+
+            Link deleteLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(OrderController.class)
+                    .deleteOrder(order.getOrderId()))
+                    .withRel("delete");
+            
+            dto.add(selfLink);
+            dto.add(allOrdersLink);
+            dto.add(updateLink);
+            dto.add(deleteLink);
+        } else {
+            // Handling case when order or customer is null
+            dto.setCustomer(new CustomerDto("Unknown", "Unknown", "Unknown"));
+        }
 
         return dto;
     }

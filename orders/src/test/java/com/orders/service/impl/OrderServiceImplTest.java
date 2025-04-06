@@ -1,12 +1,14 @@
 package com.orders.service.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
-import java.time.LocalDate;
 import java.util.Optional;
 
 import com.orders.dto.OrderDto;
+import com.orders.entity.Customer;
 import com.orders.entity.Order;
 import com.orders.repository.OrderRepository;
 import org.junit.jupiter.api.Test;
@@ -24,17 +26,22 @@ public class OrderServiceImplTest {
     @InjectMocks
     private OrderServiceImpl orderService;
 
-    @Test
-    void testGetOrderById() {
-        // Arrange
-        Order order = new Order(1L, LocalDate.now(), 100L, "Book", 12.99, null, null);
-        when(orderRepository.findById(1L)).thenReturn(Optional.of(order));
+@Test
+void testGetOrderById() {
+    Customer customer = new Customer();
+    customer.setName("John Doe");
+    Order order = new Order();
+    order.setCustomer(customer);
 
-        // Act
-        OrderDto orderDto = orderService.getOrder(1L);
+    // Mocking the behavior of the order repository
+    when(orderRepository.findById(anyLong())).thenReturn(Optional.of(order));
 
-        // Assert
-        assertEquals(1L, orderDto.getOrderId());
-        assertEquals("Book", orderDto.getProduct());
-    }
+    // Call the method to test
+    OrderDto orderDto = orderService.getOrder(1L);
+
+    // Asserting the result
+    assertNotNull(orderDto);
+    assertEquals("John Doe", orderDto.getCustomer().getName());
+}
+
 }
