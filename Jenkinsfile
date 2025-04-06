@@ -36,14 +36,14 @@ pipeline {
                 }
             }
         }
-        stage('Docker Build') {
-            steps {
-                dir('orders') {
-                    script {
-                        docker.build('restfulapijava:latest')
-                    }
-                }
-            }
-        }
+        // stage('Docker Build') {
+        //     steps {
+        //         dir('orders') {
+        //             script {
+        //                 docker.build('restfulapijava:latest')
+        //             }
+        //         }
+        //     }
+        // }
     }
 }
