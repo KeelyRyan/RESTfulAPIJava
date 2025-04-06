@@ -59,18 +59,13 @@
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		    <dependency>
+    <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-api</artifactId>
         <version>5.9.2</version>
         <scope>test</scope>
     </dependency>
-	    <dependency>
+    <dependency>
         <groupId>org.junit.jupiter</groupId>
         <artifactId>junit-jupiter-engine</artifactId>
         <version>5.9.2</version>
@@ -78,8 +73,13 @@
     </dependency>
     <dependency>
         <groupId>org.mockito</groupId>
-        <artifactId>mockito-core</artifactId>
+        <artifactId>mockito-junit-jupiter</artifactId>
         <version>5.5.0</version>
+        <scope>test</scope>
+    </dependency>
+	<dependency>
+    	<groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-test</artifactId>
         <scope>test</scope>
     </dependency>
 	</dependencies>
@@ -137,6 +137,9 @@
                     <include>**/*Tests.java</include>
                     <include>**/*TestCase.java</include>
                 </includes>
+				<properties>
+                    <configurationParameters>junit.jupiter.extensions.autodetection.enabled=true</configurationParameters>
+                </properties>
             </configuration>
         </plugin>
 		</plugins>

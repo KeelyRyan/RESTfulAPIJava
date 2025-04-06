@@ -16,7 +16,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class OrderServiceTest {
+public class IOrderServiceTest {
 
     @Mock
     private OrderRepository orderRepository;
