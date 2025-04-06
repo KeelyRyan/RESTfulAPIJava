@@ -54,11 +54,6 @@
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<optional>true</optional>
-		</dependency>
     <!-- Spring Boot Starter Test (excludes JUnit 4) -->
     <dependency>
         <groupId>org.springframework.boot</groupId>
