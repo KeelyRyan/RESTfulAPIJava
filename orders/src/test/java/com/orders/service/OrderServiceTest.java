@@ -25,7 +25,7 @@ public class OrderServiceTest {
     private OrderServiceImpl orderService;
 
     @Test
-    public void testGetOrderById() {
+    void testGetOrderById() {
         Order order = new Order(1L, LocalDate.now(), 100L, "Book", 12.99, null, null);
         when(orderRepository.findById(1L)).thenReturn(Optional.of(order));
 
