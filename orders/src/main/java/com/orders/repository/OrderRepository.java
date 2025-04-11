@@ -3,6 +3,8 @@ package com.orders.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.orders.entity.Customer;
 import com.orders.entity.Order;
 
 import java.time.LocalDate;
@@ -15,4 +17,5 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findAllByOrderByOrderDateAsc();
     List<Order> findAllByOrderByOrderDateDesc();
     Page<Order> findByCustomerCustomerId(Long customerId, Pageable pageable);
+    Customer saveAndFlush(Customer customer);
 }

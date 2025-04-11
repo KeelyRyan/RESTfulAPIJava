@@ -1,19 +1,14 @@
 package com.orders.controller;
 
-import com.orders.constants.OrdersConstants;
 import com.orders.dto.CustomerDto;
 import com.orders.dto.OrderDto;
-import com.orders.dto.ResponseDto;
 import com.orders.entity.Customer;
 import com.orders.mapper.CustomerMapper;
 import com.orders.service.IOrderService;
-
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-
 import java.time.LocalDate;
 import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -82,12 +77,10 @@ public class OrderController {
         return ResponseEntity.ok(orders);
     }
     
-    
     @PostMapping(path = "/orders")
-    public ResponseEntity<ResponseDto> createOrder(@Valid @RequestBody OrderDto orderDto) {
-        orderService.createOrder(orderDto);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new ResponseDto(OrdersConstants.STATUS_201, OrdersConstants.MESSAGE_201));
+    public ResponseEntity<OrderDto> createOrder(@Valid @RequestBody OrderDto orderDto) {
+        OrderDto createdOrder = orderService.createOrder(orderDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdOrder);
     }
     
     
@@ -98,12 +91,11 @@ public class OrderController {
         return ResponseEntity.ok(updatedOrder);
     }
     @PutMapping("/customer/{mobileNumber}")
-    public ResponseEntity<ResponseDto> updateCustomer(@Valid @PathVariable String mobileNumber, @RequestBody CustomerDto customerDto) {
+    public ResponseEntity<Void> updateCustomer(@Valid @PathVariable String mobileNumber, @RequestBody CustomerDto customerDto) {
         orderService.updateCustomer(mobileNumber, customerDto);
-        return ResponseEntity
-				.status(HttpStatus.OK)
-				.body(new ResponseDto(OrdersConstants.STATUS_200, OrdersConstants.MESSAGE_200));
+        return ResponseEntity.ok().build();
     }
+
     @PostMapping("/customer")
     public ResponseEntity<CustomerDto> createCustomer(@Valid @RequestBody CustomerDto customerDto) {
         Customer customer = orderService.createCustomer(customerDto);
@@ -117,19 +109,11 @@ public class OrderController {
     }
 
     @DeleteMapping("/customer/{mobileNumber}")
-    public ResponseEntity<ResponseDto> deleteCustomer(@PathVariable String mobileNumber) {
+    public ResponseEntity<Void> deleteCustomer(@PathVariable String mobileNumber) {
         boolean isDeleted = orderService.deleteCustomer(mobileNumber);
-    	if (isDeleted) {
-            return ResponseEntity
-    				.status(HttpStatus.OK)
-    				.body(new ResponseDto(OrdersConstants.STATUS_200, OrdersConstants.MESSAGE_200));
-        }else {
-    		return ResponseEntity
-    				.status(HttpStatus.EXPECTATION_FAILED)
-    				.body(new ResponseDto(OrdersConstants.STATUS_417, OrdersConstants.MESSAGE_417_UPDATE));
-    	}
-        
-    }
+        return isDeleted ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
+}
+
 
 }
 

@@ -11,7 +11,7 @@ import com.orders.dto.OrderDto;
 import com.orders.entity.Customer;
 
 public interface IOrderService {
-    void createOrder(OrderDto orderDto);
+	OrderDto createOrder(OrderDto orderDto);
     OrderDto getOrder(Long orderId);
     CustomerDto getCustomerByMobile(String mobileNumber);
 	boolean isDeleted(String mobileNumber);

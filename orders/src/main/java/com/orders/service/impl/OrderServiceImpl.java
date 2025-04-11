@@ -11,8 +11,6 @@ import com.orders.repository.CustomerRepository;
 import com.orders.repository.OrderRepository;
 import com.orders.service.IOrderService;
 import lombok.AllArgsConstructor;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -34,7 +32,7 @@ public class OrderServiceImpl implements IOrderService {
     //Orders 
     @Override
     @Transactional
-    public void createOrder(OrderDto orderDto) {
+    public OrderDto createOrder(OrderDto orderDto) {
         // Find or create customer
         Customer customer = customerRepository.findByMobileNumber(orderDto.getCustomer().getMobileNumber())
                 .orElseGet(() -> {
@@ -60,6 +58,8 @@ public class OrderServiceImpl implements IOrderService {
 
         // Save order
         orderRepository.save(order);
+        Order savedOrder = orderRepository.save(order);
+        return OrderMapper.mapToOrderDto(savedOrder);
     }
 
     @Override
