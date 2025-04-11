@@ -105,7 +105,13 @@
         <artifactId>lombok</artifactId>
         <optional>true</optional>
     </dependency>
-	</dependencies>
+
+	<!-- Flyway -->
+	<dependency>
+  	  <groupId>org.flywaydb</groupId>
+  	  <artifactId>flyway-core</artifactId>
+	</dependency>
+</dependencies>
 
 	<build>
 		<plugins>
