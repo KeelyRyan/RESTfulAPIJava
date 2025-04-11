@@ -81,8 +81,7 @@ public class OrderController {
     public ResponseEntity<OrderDto> createOrder(@Valid @RequestBody OrderDto orderDto) {
         OrderDto createdOrder = orderService.createOrder(orderDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdOrder);
-    }
-    
+    }    
     
     @PutMapping("/orders/{orderId}")
     public ResponseEntity<OrderDto> updateOrder(@Valid @PathVariable Long orderId, @RequestBody OrderDto orderDto) {
