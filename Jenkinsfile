@@ -49,19 +49,21 @@ pipeline {
                 }
             }
         }
-stage('Debug Directory') {
-    steps {
-        sh 'pwd && ls -l'
-    }
-}
 
-stage('Run Ansible Deployment') {
-    steps {
-        script {
-            dir("${env.WORKSPACE}") {
-                sh 'ansible-playbook deploy.yml'
+        stage('Debug Directory') {
+            steps {
+                sh 'pwd && ls -l'
             }
         }
-    }
+
+        stage('Run Ansible Deployment') {
+            steps {
+                script {
+                    dir("${env.WORKSPACE}") {
+                        sh 'ansible-playbook deploy.yml'
+                    }
+                }
+            }
+        }
+    } 
 }
-    }
