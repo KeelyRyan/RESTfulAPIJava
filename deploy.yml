@@ -1,0 +1,21 @@
+---
+- name: Deploy Spring Boot app with Docker
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Stop and remove old container if exists
+      shell: |
+        docker ps -q --filter "name=orders-app" | grep -q . && docker stop orders-app && docker rm orders-app || true
+
+    - name: Build Spring Boot JAR
+      shell: ./mvnw clean package -DskipTests
+      args:
+        chdir: /Users/keelyryan/Documents/GitHub/RESTfulAPIJava/orders
+
+    - name: Build Docker image
+      shell: docker build -t orders-app .
+      args:
+        chdir: /Users/keelyryan/Documents/GitHub/RESTfulAPIJava/orders
+
+    - name: Run Docker container
+      shell: docker run -d --name orders-app -p 8000:8000 orders-app

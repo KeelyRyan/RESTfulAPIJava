@@ -42,15 +42,12 @@ pipeline {
                     sh 'mvn test'
                 }
             }
-        // stage('Docker Build') {
-        //     steps {
-        //         dir('orders') {
-        //             script {
-        //                 docker.build('restfulapijava:latest')
-        //             }
-        //         }
-        //     }
-        // }
+        stage('Run Ansible Deployment') {
+            steps {
+                sh 'ansible-playbook deploy.yml'
+            }
+        }
+    }
     }
 }
 }
