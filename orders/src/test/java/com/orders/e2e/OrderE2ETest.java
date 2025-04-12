@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Transactional
-public class OrderE2ETest {
+class OrderE2ETest {
 
     @Autowired
     private TestRestTemplate restTemplate;

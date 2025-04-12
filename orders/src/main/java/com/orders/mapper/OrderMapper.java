@@ -4,13 +4,13 @@ import com.orders.controller.OrderController;
 import com.orders.dto.CustomerDto;
 import com.orders.dto.OrderDto;
 import com.orders.entity.Order;
-import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 
 public class OrderMapper {
 
     public static OrderDto mapToOrderDto(Order order) {
         OrderDto dto = new OrderDto();
+
         dto.setOrderId(order.getOrderId());
         dto.setOrderDate(order.getOrderDate());
         dto.setAmount(order.getAmount());
@@ -18,37 +18,9 @@ public class OrderMapper {
         dto.setPrice(order.getPrice());
         dto.setUpdatedAt(order.getUpdatedAt());
 
-        // Adding null check for order and customer
-        if (order != null && order.getCustomer() != null) {
-            dto.setCustomer(new CustomerDto(
-                    order.getCustomer().getName(), 
-                    order.getCustomer().getEmail(), 
-                    order.getCustomer().getMobileNumber()));
+        dto.setCustomer(mapCustomer(order));
 
-            Link selfLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(OrderController.class)
-                    .getOrder(order.getOrderId()))
-                    .withSelfRel();
-
-            Link allOrdersLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(OrderController.class)
-                    .getAllOrders(null))
-                    .withRel("all-orders");
-            
-            Link updateLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(OrderController.class)
-                    .updateOrder(order.getOrderId(), null))
-                    .withRel("update");
-
-            Link deleteLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(OrderController.class)
-                    .deleteOrder(order.getOrderId()))
-                    .withRel("delete");
-            
-            dto.add(selfLink);
-            dto.add(allOrdersLink);
-            dto.add(updateLink);
-            dto.add(deleteLink);
-        } else {
-            // Handling case when order or customer is null
-            dto.setCustomer(new CustomerDto("Unknown", "Unknown", "Unknown"));
-        }
+        addOrderLinks(dto, order.getOrderId());
 
         return dto;
     }
@@ -62,5 +34,34 @@ public class OrderMapper {
         order.setPrice(dto.getPrice());
         order.setUpdatedAt(dto.getUpdatedAt());
         return order;
+    }
+
+    private static CustomerDto mapCustomer(Order order) {
+        if (order.getCustomer() == null) {
+            return new CustomerDto("Unknown", "Unknown", "Unknown");
+        }
+        return new CustomerDto(
+            order.getCustomer().getName(),
+            order.getCustomer().getEmail(),
+            order.getCustomer().getMobileNumber()
+        );
+    }
+
+    private static void addOrderLinks(OrderDto dto, Long orderId) {
+        dto.add(WebMvcLinkBuilder.linkTo(
+                WebMvcLinkBuilder.methodOn(OrderController.class).getOrder(orderId))
+                .withSelfRel());
+
+        dto.add(WebMvcLinkBuilder.linkTo(
+                WebMvcLinkBuilder.methodOn(OrderController.class).getAllOrders(null))
+                .withRel("all-orders"));
+
+        dto.add(WebMvcLinkBuilder.linkTo(
+                WebMvcLinkBuilder.methodOn(OrderController.class).updateOrder(orderId, null))
+                .withRel("update"));
+
+        dto.add(WebMvcLinkBuilder.linkTo(
+                WebMvcLinkBuilder.methodOn(OrderController.class).deleteOrder(orderId))
+                .withRel("delete"));
     }
 }

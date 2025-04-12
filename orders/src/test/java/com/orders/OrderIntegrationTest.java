@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Transactional
 @Rollback
-public class OrderIntegrationTest {
+class OrderIntegrationTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
