@@ -41,7 +41,7 @@ pipeline {
                                 mvn clean verify sonar:sonar \
                                   -Dsonar.projectKey=orders \
                                   -Dsonar.host.url=http://localhost:9000 \
-                                  -Dsonar.login=$SONAR_TOKEN
+                                  -Dsonar.login=$SONAR_TOKEN \
                                   -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
                             '''
                               
