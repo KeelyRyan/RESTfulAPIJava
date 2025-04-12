@@ -134,8 +134,17 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+					<executions>
+						<execution>
+						<goals>
+							<goal>repackage</goal>
+							<goal>build-image</goal>
+						</goals>
+						</execution>
+				</executions>
 				</configuration>
 			</plugin>
+			
         <!-- Surefire Plugin for JUnit 5 -->
         <plugin>
             <groupId>org.apache.maven.plugins</groupId>

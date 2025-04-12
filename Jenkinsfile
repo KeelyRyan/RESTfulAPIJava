@@ -24,6 +24,13 @@ pipeline {
                 }
             }
         }
+        stage('Build Docker Image') {
+            steps {
+                dir('orders') {
+                    sh 'mvn spring-boot:build-image -Dspring-boot.build-image.imageName=orders-app'
+                }
+            }
+        }
 
         stage('SonarQube Analysis') {
             steps {
