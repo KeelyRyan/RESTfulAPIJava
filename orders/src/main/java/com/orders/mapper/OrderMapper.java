@@ -37,8 +37,9 @@ public class OrderMapper {
     }
 
     private static CustomerDto mapCustomer(Order order) {
+        String unknown = "Unkown";
         if (order.getCustomer() == null) {
-            return new CustomerDto("Unknown", "Unknown", "Unknown");
+            return new CustomerDto(unknown, unknown, unknown);
         }
         return new CustomerDto(
             order.getCustomer().getName(),
