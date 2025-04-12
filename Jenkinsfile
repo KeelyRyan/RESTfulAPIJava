@@ -64,18 +64,4 @@ stage('Run Ansible Deployment') {
         }
     }
 }
-
-
-            post {
-            always {
-                echo 'Cleaning up...'
-            }
-            success {
-                echo 'Pipeline succeeded!'
-            }
-            failure {
-                echo 'Pipeline failed!'
-            }
-        }
     }
-}
