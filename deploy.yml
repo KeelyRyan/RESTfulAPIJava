@@ -1,4 +1,3 @@
-# deploy.yml
 - name: Deploy Spring Boot App
   hosts: localhost
   become: false

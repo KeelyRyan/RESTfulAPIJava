@@ -3,7 +3,6 @@ package com.orders;
 import com.orders.dto.OrderDto;
 import com.orders.dto.CustomerDto;
 import com.orders.entity.Customer;
-import com.orders.repository.OrderRepository;
 import com.orders.repository.CustomerRepository;
 
 import org.junit.jupiter.api.Test;
