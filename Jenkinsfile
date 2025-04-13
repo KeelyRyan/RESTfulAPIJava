@@ -4,7 +4,7 @@ pipeline {
     environment {
         JAVA_HOME = "/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home"
         PATH = "/usr/local/bin:/opt/homebrew/bin:${JAVA_HOME}/bin:${env.PATH}"
-         SPRING_PROFILES_ACTIVE = 'docker'
+        SPRING_PROFILES_ACTIVE = 'docker'
     }
 
     tools {
