@@ -41,7 +41,7 @@ class OrderIntegrationTest {
         Customer testCustomer = new Customer();
         testCustomer.setName("John Doe");
         testCustomer.setEmail("john.doe@example.com");
-        testCustomer.setMobileNumber("1234567890");
+        testCustomer.setMobileNumber("123456789");
         Customer savedCustomer = customerRepository.save(testCustomer);
         System.out.println("Customer saved with ID: " + savedCustomer.getCustomerId());
 
@@ -77,5 +77,20 @@ class OrderIntegrationTest {
         assertEquals(49.99, getResponse.getBody().getPrice());
         assertEquals("John Doe", getResponse.getBody().getCustomer().getName());
 
+        // Act: Update the order
+        newOrder.setProduct("Updated Product");
+        restTemplate.put("/api/orders/" + orderId, newOrder);
+
+        // Act: Fetch the updated order
+        ResponseEntity<OrderDto> updatedResponse = restTemplate.getForEntity("/api/orders/" + orderId, OrderDto.class);
+        assertEquals(HttpStatus.OK, updatedResponse.getStatusCode());
+        assertEquals("Updated Product", updatedResponse.getBody().getProduct());
+
+        // Act: Delete the order
+        restTemplate.delete("/api/orders/" + orderId);
+
+        // Assert: Verify deletion
+        Optional<Order> deletedOrder = orderRepository.findById(orderId);
+        assertTrue(deletedOrder.isEmpty());
     }
 }
