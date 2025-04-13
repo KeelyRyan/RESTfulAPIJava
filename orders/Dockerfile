@@ -13,3 +13,4 @@ EXPOSE 8000
 # Run the application
 ENTRYPOINT ["java", "-jar", "-Dh2.console.webAllowOthers=true", "app.jar"]
 
+RUN mkdir -p /data
