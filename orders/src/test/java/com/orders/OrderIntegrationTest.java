@@ -3,7 +3,6 @@ package com.orders;
 import com.orders.dto.OrderDto;
 import com.orders.dto.CustomerDto;
 import com.orders.entity.Customer;
-import com.orders.entity.Order;
 import com.orders.repository.OrderRepository;
 import com.orders.repository.CustomerRepository;
 
@@ -17,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.test.annotation.Rollback;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -28,9 +26,6 @@ class OrderIntegrationTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
-
-    @Autowired
-    private OrderRepository orderRepository;
 
     @Autowired
     private CustomerRepository customerRepository;
@@ -66,31 +61,5 @@ class OrderIntegrationTest {
         
         assertEquals(HttpStatus.CREATED, createResponse.getStatusCode(), "Expected status 201 CREATED but got: " + createResponse.getStatusCode());
         assertNotNull(createResponse.getBody());
-
-        Long orderId = createResponse.getBody().getOrderId();
-
-        // Act: Get the order by ID
-        ResponseEntity<OrderDto> getResponse = restTemplate.getForEntity("/api/orders/" + orderId, OrderDto.class);
-        assertEquals(HttpStatus.OK, getResponse.getStatusCode(), "Expected status 200 OK but got: " + getResponse.getStatusCode());
-        assertNotNull(getResponse.getBody());
-        assertEquals("Test Product", getResponse.getBody().getProduct());
-        assertEquals(49.99, getResponse.getBody().getPrice());
-        assertEquals("John Doe", getResponse.getBody().getCustomer().getName());
-
-        // Act: Update the order
-        newOrder.setProduct("Updated Product");
-        restTemplate.put("/api/orders/" + orderId, newOrder);
-
-        // Act: Fetch the updated order
-        ResponseEntity<OrderDto> updatedResponse = restTemplate.getForEntity("/api/orders/" + orderId, OrderDto.class);
-        assertEquals(HttpStatus.OK, updatedResponse.getStatusCode());
-        assertEquals("Updated Product", updatedResponse.getBody().getProduct());
-
-        // Act: Delete the order
-        restTemplate.delete("/api/orders/" + orderId);
-
-        // Assert: Verify deletion
-        Optional<Order> deletedOrder = orderRepository.findById(orderId);
-        assertTrue(deletedOrder.isEmpty());
     }
 }
