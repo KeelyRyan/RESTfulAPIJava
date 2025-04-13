@@ -35,8 +35,8 @@ class OrderE2ETest {
         OrderDto orderDto = new OrderDto();
         orderDto.setCustomer(customerDto);
         orderDto.setAmount(5L);
-        orderDto.setPrice(199.99);
-        orderDto.setProduct("Magic Hat");
+        orderDto.setPrice(699.99);
+        orderDto.setProduct("iPhone14");
         orderDto.setOrderDate(LocalDate.now());
     
         ResponseEntity<OrderDto> createOrderResponse = restTemplate.postForEntity("/api/orders", orderDto, OrderDto.class);
@@ -50,16 +50,16 @@ class OrderE2ETest {
         // Act: Fetch the order
         ResponseEntity<OrderDto> getOrder = restTemplate.getForEntity("/api/orders/" + orderId, OrderDto.class);
         assertEquals(HttpStatus.OK, getOrder.getStatusCode());
-        assertEquals("Magic Hat", getOrder.getBody().getProduct());
+        assertEquals("iPhone14", getOrder.getBody().getProduct());
     
         // Act: Update the order
-        orderDto.setProduct("Invisibility Cloak");
+        orderDto.setProduct("Samsung Galaxy 25");
         HttpEntity<OrderDto> updateRequest = new HttpEntity<>(orderDto);
         restTemplate.put("/api/orders/" + orderId, updateRequest);
     
         // Act: Fetch updated order
         OrderDto updated = restTemplate.getForObject("/api/orders/" + orderId, OrderDto.class);
-        assertEquals("Invisibility Cloak", updated.getProduct());
+        assertEquals("Samsung Galaxy 25", updated.getProduct());
     
         // Act: Fetch all orders for the customer (paged)
         ResponseEntity<Map> response = restTemplate.getForEntity(
