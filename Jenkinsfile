@@ -20,6 +20,7 @@ pipeline {
         stage('Build') {
             steps {
                 dir('orders') {
+                    sh 'echo Running with profile: $SPRING_PROFILES_ACTIVE'
                     sh 'mvn clean package'
                 }
             }
